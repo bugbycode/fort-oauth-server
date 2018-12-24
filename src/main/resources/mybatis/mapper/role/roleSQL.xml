@@ -6,6 +6,7 @@
 	<resultMap type="role" id="roleResult">
 		<result property="id" 					column="id"/>
 		<result property="name" 				column="name"/>
+		<result property="type" 				column="type"/>
 		<result property="description" 			column="description"/>
 		<result property="grantedAuthority" 	column="granted_authority"/>
 		<result property="createTime" 			column="create_time"/>
@@ -16,6 +17,7 @@
 			SELECT
 			  `id`,
 			  `name`,
+			  `type`,
 			  `description`,
 			  `granted_authority`,
 			  `create_time`,
