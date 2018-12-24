@@ -124,7 +124,7 @@
 	</select>
 	<delete id="deleteRefreshByTokenId" parameterType="java.lang.String">
 		<![CDATA[
-			DELETE FROM `oauth_refresh_token` `token_id` = #{tokenId}
+			DELETE FROM `oauth_refresh_token` WHERE `token_id` = #{tokenId}
 		]]>
 	</delete>
 </mapper>
