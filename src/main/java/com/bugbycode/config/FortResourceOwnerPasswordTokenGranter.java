@@ -53,18 +53,18 @@ public class FortResourceOwnerPasswordTokenGranter extends ResourceOwnerPassword
 		parameters.remove("password");
 		
 		if(StringUtil.isEmpty(password)) {
-			throw new RuntimeException("用户名密码错误");
+			throw new InvalidGrantException("用户名密码错误");
 		}
 		
 		password = AESUtil.encrypt(password);
 		
 		User user = userService.queryByUserNameAndPassword(username, password);
 		if(user == null) {
-			throw new RuntimeException("用户名密码错误");
+			throw new InvalidGrantException("用户名密码错误");
 		}
 		
 		if(user.getStatus() == 0) {
-			throw new RuntimeException("用户已被锁定");
+			throw new InvalidGrantException("用户已被锁定");
 		}
 		
 		Authentication userAuth = new UsernamePasswordAuthenticationToken(username, "");
