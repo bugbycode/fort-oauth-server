@@ -21,17 +21,25 @@ import org.springframework.security.oauth2.provider.TokenRequest;
 import org.springframework.security.oauth2.provider.password.ResourceOwnerPasswordTokenGranter;
 import org.springframework.security.oauth2.provider.token.AuthorizationServerTokenServices;
 
+import com.bugbycode.module.user.User;
+import com.bugbycode.service.oauth.UserService;
+import com.util.AESUtil;
+import com.util.StringUtil;
+
 public class FortResourceOwnerPasswordTokenGranter extends ResourceOwnerPasswordTokenGranter {
 
 	private final Logger logger = LogManager.getLogger(FortResourceOwnerPasswordTokenGranter.class);
 
 	private final AuthenticationManager authenticationManager;
 	
+	private UserService userService;
+	
 	public FortResourceOwnerPasswordTokenGranter(AuthenticationManager authenticationManager,
 			AuthorizationServerTokenServices tokenServices, ClientDetailsService clientDetailsService,
-			OAuth2RequestFactory requestFactory) {
+			OAuth2RequestFactory requestFactory,UserService userService) {
 		super(authenticationManager, tokenServices, clientDetailsService, requestFactory);
 		this.authenticationManager = authenticationManager;
+		this.userService = userService;
 	}
 
 	@Override
@@ -40,10 +48,25 @@ public class FortResourceOwnerPasswordTokenGranter extends ResourceOwnerPassword
 		Map<String, String> parameters = new LinkedHashMap<String, String>(tokenRequest.getRequestParameters());
 		String username = parameters.get("username");
 		logger.info("登录用户信息：" + username);
-		//String password = parameters.get("password");
+		String password = parameters.get("password");
 		// Protect from downstream leaks of password
 		parameters.remove("password");
-
+		
+		if(StringUtil.isEmpty(password)) {
+			throw new RuntimeException("用户名密码错误");
+		}
+		
+		password = AESUtil.encrypt(password);
+		
+		User user = userService.queryByUserNameAndPassword(username, password);
+		if(user == null) {
+			throw new RuntimeException("用户名密码错误");
+		}
+		
+		if(user.getStatus() == 0) {
+			throw new RuntimeException("用户已被锁定");
+		}
+		
 		Authentication userAuth = new UsernamePasswordAuthenticationToken(username, "");
 		((AbstractAuthenticationToken) userAuth).setDetails(parameters);
 		try {

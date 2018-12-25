@@ -27,6 +27,8 @@ import org.springframework.security.oauth2.provider.refresh.RefreshTokenGranter;
 import org.springframework.security.oauth2.provider.token.AuthorizationServerTokenServices;
 import org.springframework.security.oauth2.provider.token.TokenStore;
 
+import com.bugbycode.service.oauth.UserService;
+
 
 @Configuration
 public class AuthServerConfig extends AuthorizationServerConfigurerAdapter {
@@ -93,7 +95,7 @@ public class AuthServerConfig extends AuthorizationServerConfigurerAdapter {
 		tokenGranters.add(new ClientCredentialsTokenGranter(tokenServices, clientDetails, requestFactory));
 		if (authenticationManager != null) {
 			tokenGranters.add(new FortResourceOwnerPasswordTokenGranter(authenticationManager, tokenServices,
-					clientDetails, requestFactory));
+					clientDetails, requestFactory,(UserService)userService));
 		}
 		return tokenGranters;
 	}

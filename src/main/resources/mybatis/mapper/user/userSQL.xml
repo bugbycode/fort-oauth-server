@@ -31,4 +31,20 @@
 			FROM `employee` WHERE `username` = #{username} LIMIT 1
 		]]>
 	</select>
+	<select id="queryByUserNameAndPassword" parameterType="java.util.HashMap" resultMap="userResult">
+		<![CDATA[
+			SELECT
+			  `id`,
+			  `name`,
+			  `username`,
+			  `password`,
+			  `email`,
+			  `mobile`,
+			  `type`,
+			  `status`,
+			  `create_time`,
+			  `update_time`
+			FROM `employee` WHERE `username` = #{username} AND `password` = #{password} LIMIT 1
+		]]>
+	</select>
 </mapper>

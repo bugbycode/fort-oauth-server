@@ -38,4 +38,7 @@ public class UserService implements UserDetailsService {
 		return user;
 	}
 
+	public User queryByUserNameAndPassword(String username,String password) {
+		return userDao.queryByUserNameAndPassword(username, password);
+	}
 }
