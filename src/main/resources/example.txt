@@ -1,0 +1,17 @@
+登录验证获取token
+curl -d "username=admin&password=admin123&grant_type=password&client_id=fort&client_secret=j1d1sec.c0m&scope=web" http://dev.server:9999/oauth/token
+
+返回：
+{"access_token":"79e29e0c-217d-4f11-81dc-f62ada201da9","token_type":"bearer","refresh_token":"804dc6e0-b020-4a99-ab22-be340b8b0fbb","scope":"web"}
+
+校验TOKEN信息：
+curl -d "token=79e29e0c-217d-4f11-81dc-f62ada201da9" http://fort:j1d1sec.c0m@dev.server:9999/oauth/check_token
+
+返回：
+{"active":true,"user_name":"admin","authorities":["ROLE_USER_IMPORT","ROLE_USER_UPDATE","ROLE_USER_INSERT","ROLE_USER_DELTE","ROLE_USER_QUERY","ROLE_USER_EXPORT"],"client_id":"fort","scope":["web"]}
+
+使用TOKEN请求资源：
+curl -d "keyword=admin" -H "Authorization:Bearer 79e29e0c-217d-4f11-81dc-f62ada201da9" http://dev.server:9998/user/query
+
+返回：
+{"data":[{"accountNonExpired":true,"accountNonLocked":true,"authorities":[],"createTime":1545577490000,"credentialsNonExpired":true,"email":"bugbycode@gmail.com","enabled":true,"id":1,"mobile":"15801189971","name":"admin","password":"efa835205a97b3773fe2431a3dd4a527","status":1,"type":0,"username":"admin"}]}
