@@ -8,6 +8,7 @@ import org.junit.Test;
 import org.springframework.util.StringUtils;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.util.AESUtil;
 
 public class TestCode {
 	
@@ -25,5 +26,10 @@ public class TestCode {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+	
+	@Test
+	public void testEncryptPassword() {
+		System.out.println(AESUtil.encrypt("admin123"));
 	}
 }

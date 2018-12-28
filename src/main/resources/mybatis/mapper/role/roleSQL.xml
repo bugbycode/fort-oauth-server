@@ -23,13 +23,11 @@
 			  `create_time`,
 			  `update_time`
 			FROM `role` WHERE `id` IN (
-			   SELECT `role_id` FROM rel_employee_role WHERE `emp_id` = #{userId}
-   
+			   SELECT `role_id` FROM employee WHERE `id` = #{userId}
+			
 			   UNION 
 			   
-			   SELECT `role_id` FROM `rel_employee_group_role` WHERE `group_id` IN (
-				   SELECT `group_id` FROM `rel_employee_group` WHERE `emp_id` = #{userId}
-				)
+			   SELECT eg.`role_id` FROM `employee_group` eg,`employee` e WHERE eg.`id` = e.`id` AND e.`id` = #{userId}
 			)
 		]]>
 	</select>
