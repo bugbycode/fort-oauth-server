@@ -27,7 +27,7 @@
 			
 			   UNION 
 			   
-			   SELECT eg.`role_id` FROM `employee_group` eg,`employee` e WHERE eg.`id` = e.`id` AND e.`id` = #{userId}
+			   SELECT eg.`role_id` FROM `employee_group` eg,`employee` e WHERE eg.`id` = e.`group_id` AND e.`id` = #{userId}
 			)
 		]]>
 	</select>
